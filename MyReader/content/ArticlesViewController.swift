@@ -22,19 +22,6 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
             self.tableView?.reloadData()
         }
     }
-//    var articles: [Article]? {
-//        get {
-//            return _articles
-//        }
-//        set {
-//            if self._articles == newValue {
-//                return
-//            }
-//            self._articles = newValue
-//        }
-//    }
-    
-    
     
     struct Static {
         static let rowIdentify = "articleRow"
@@ -87,10 +74,7 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
         }
         return 0
     }
-    
-    override func viewDidLayout() {
-        super.viewDidLayout()
-    }
+   
    
     
     func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
@@ -135,12 +119,7 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
         }
         return true
     }
-    
-    override func scrollWheel(event: NSEvent) {
-        super.scrollWheel(event)
-    }
-    
-    
+   
     
 
 }

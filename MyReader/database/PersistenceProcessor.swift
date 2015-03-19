@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SQLite
 
 class PersistenceProcessor
 {
@@ -18,108 +19,167 @@ class PersistenceProcessor
         return Singleton.instance
     }
     
-    let database: SQLiteDB
+    let database: Database
+    var feeds: [Feed] = [Feed]()
+    var feedsQuery: SQLite.Query
+    var articlesQuery: SQLite.Query
+    
+    struct FeedTable {
+        static let id = Expression<Int64>("id")
+        static let name = Expression<String>("name")
+        static let url = Expression<String>("url")
+        static let parentId = Expression<Int>("parentId")
+        static let unreadCount = Expression<Int>("unreadCount")
+        static let lastUpdated = Expression<Double>("lastUpdated")
+        static let type = Expression<Int>("type")
+        static let nextSibling = Expression<Int>("nextSibling")
+        static let firstChild = Expression<Int>("firstChile")
+    }
+    
+    struct ArticleTable {
+        static let url = Expression<String>("url")
+        static let title = Expression<String>("title")
+        static let description = Expression<String>("description")
+        static let feedId = Expression<Int64>("feedId")
+        static let pubDate = Expression<Double>("pubDate")
+        static let Read = Expression<Int>("Read")
+    }
     
     init() {
+        database = Database("wetalk.sqlite3")
         
-        database = SQLiteDB(name: "wetalk") { (db: COpaquePointer) -> Void in
-            
-            let sql_stmt = "CREATE TABLE IF NOT EXISTS FEEDS(ID INTEGER PRIMARY KEY , Name TEXT DEFAULT '', Url TEXT, ParentId INTEGER DEFAULT 0, UnreadCount Integer DEFAULT 0, LastUpdated REAL DEFAULT 0, Type Integet DEFAULT 0, NextSibling INTEGER DEFAULT 0, FirstChild INTEGET DEFAULT 0)"
-            if sqlite3_exec(db, sql_stmt, nil, nil, nil) != SQLITE_OK {
-                println("create table FEEDS failed")
-            }
-            
-            let article_stmt = "CREATE TABLE IF NOT EXISTS ARTICLES(Url TEXT PRIMARY KEY, Title TEXT DEFAULT '', Description TEXT DEFAULT '', FeedId INTEGER DEFAULT 0, PubDate REAL DEFAULT 0, Read INTEGER DEFAULT 0)"
-            if sqlite3_exec(db, article_stmt, nil, nil, nil) != SQLITE_OK {
-                println("create table article failed")
-            }
-            
+        feedsQuery = database["feeds"]
+        
+        database.create(table: feedsQuery, ifNotExists: true) { t in
+            t.column(FeedTable.id, primaryKey: true)
+            t.column(FeedTable.name, defaultValue: "")
+            t.column(FeedTable.url, unique: true)
+            t.column(FeedTable.parentId, defaultValue: 0)
+            t.column(FeedTable.unreadCount, defaultValue: 0)
+            t.column(FeedTable.lastUpdated, defaultValue: 0)
+            t.column(FeedTable.type, defaultValue: 0)
+            t.column(FeedTable.nextSibling, defaultValue: 0)
+            t.column(FeedTable.firstChild, defaultValue: 0)
         }
+        
+        articlesQuery = database["articles"]
+        
+        database.create(table: articlesQuery, ifNotExists: true) { t in
+            
+            t.column(ArticleTable.url, primaryKey: true)
+            t.column(ArticleTable.title)
+            t.column(ArticleTable.description)
+            t.column(ArticleTable.feedId)
+            t.column(ArticleTable.pubDate)
+            t.column(ArticleTable.Read, defaultValue: 0)
+        }
+        
         feeds = self.getFeeds()
     }
     
-    var feeds: [Feed] = [Feed]()
     
     func getFeeds() -> [Feed] {
-        let data = database.query("SELECT ID, Name, Url, ParentId, UnreadCount, LastUpdated, Type, NextSibling, FirstChild FROM FEEDS")
-        
         var feeds = [Feed]()
-        for row in data {
-            let id = row["ID"]?.asInt()
-            let name = row["Name"]?.asString()
-            let url = row["Url"]?.asString()
-            let parentId = row["ParentId"]?.asInt()
-            let unreadCount = row["UnreadCount"]?.asInt()
-            let lastUpdated = row["LastUpdated"]?.asDouble()
-            let type = row["Type"]?.asInt()
-            let nextSibling = row["NextSibling"]?.asInt()
-            let firstChild = row["FirstChild"]?.asInt()
-            
-            let feed = Feed(id: id!, name: name!, url: url!, parentId: parentId!, unreadCount: unreadCount!,
-                lastUpdated: NSDate(timeIntervalSince1970: lastUpdated!), type: type!,
-                nextSibling: nextSibling!, firstChild: firstChild!)
+        for feedQuery in feedsQuery {
+            // id: 1, name: Optional("Alice"), email: alice@mac.com
+            let id: Int64 = feedQuery[FeedTable.id]
+            let name: String = feedQuery[FeedTable.name]
+            let url = feedQuery[FeedTable.url]
+            let parentId = feedQuery[FeedTable.parentId]
+            let unreadCount = feedQuery[FeedTable.unreadCount]
+            let type = feedQuery[FeedTable.type]
+            let nextSibling = feedQuery[FeedTable.nextSibling]
+            let lastUpdated = feedQuery[FeedTable.lastUpdated]
+            let firstChild = feedQuery[FeedTable.firstChild]
+            let feed = Feed(id: id,
+                name: name,
+                url: url,
+                parentId: parentId,
+                unreadCount: feedQuery[FeedTable.unreadCount],
+                lastUpdated: NSDate(timeIntervalSince1970: feedQuery[FeedTable.lastUpdated]),
+                type: feedQuery[FeedTable.type],
+                nextSibling: feedQuery[FeedTable.nextSibling],
+                firstChild: feedQuery[FeedTable.firstChild])
             feeds.append( feed )
         }
         return feeds
     }
     
     func updateFeed(feed: Feed) {
-        database.execute("UPDATE FEEDS SET Name = '\(feed.name)', Url = '\(feed.url)' , ParentId = \(feed.parentId), UnreadCount = \(feed.unreadCount), LastUpdated = \(feed.lastUpdated.timeIntervalSince1970), NextSibling = \(feed.nextSibling), FirstChild = \(feed.firstChild)  where ID = \(feed.id) ")
+        let updates = feedsQuery.filter(FeedTable.id == feed.id)
+        updates.update(FeedTable.name <- feed.name,
+            FeedTable.url <- feed.url,
+            FeedTable.parentId <- feed.parentId,
+            FeedTable.unreadCount <- feed.unreadCount,
+            FeedTable.lastUpdated <- feed.lastUpdated.timeIntervalSince1970,
+            FeedTable.nextSibling <- feed.nextSibling,
+            FeedTable.firstChild <- feed.firstChild)?
     }
     
     func addSubscription(url: String) {
-        database.execute("INSERT INTO FEEDS(Url) VALUES ('\(url)')")
+        if let insertId = feedsQuery.insert(FeedTable.url <- url) {
+            println("inserted id: \(insertId)")
+            let feed = Feed(id: insertId, name: "", url: url)
+            NSNotificationCenter.defaultCenter().postNotificationName(Constants.FolderAdd, object: feed)
+        }
     }
     
     func findArticle(url: String) -> Article? {
-            let data = database.query("SELECT Url, Title, Description, FeedId, PubDate, Read FROM Articles WHERE Url = '\(url)'")
+        let query = articlesQuery.filter(ArticleTable.url == url)
+        if let articleQuery = query.first {
             
-            for row in data {
-                let url = row["Url"]?.asString()
-                let title = row["Title"]?.asString()
-                let description = row["Description"]?.asString()
-                let feedId = row["FeedId"]?.asInt()
-                let pubDate = row["PubDate"]?.asDouble()
-                let read = row["Read"]?.asInt()
-                
-                var currentFeed: Feed? = nil
-                for feed in feeds {
-                    if(feed.id == feedId!) {
-                        currentFeed = feed
-                    }
-                }
-                if let feed = currentFeed {
-                    let article = Article(title: title!, feed: feed, time: NSDate(timeIntervalSince1970: pubDate!), description: description!, url: url!)
-                    return article
+            let feedId = articleQuery[ArticleTable.feedId]
+            var currentFeed: Feed? = nil
+            for feed in feeds {
+                if(feed.id == feedId) {
+                    currentFeed = feed
                 }
             }
-            return nil
+            if let feed = currentFeed {
+            let article = Article(title: articleQuery[ArticleTable.title],
+                feed: feed,
+                time: NSDate(timeIntervalSince1970: articleQuery[ArticleTable.pubDate]),
+                description: articleQuery[ArticleTable.description],
+                url: articleQuery[ArticleTable.url])
+            return article
+            }
+        }
+        return nil
     }
     
     func getArticles(feed: Feed) -> [Article] {
-        let data = database.query("SELECT Url, Title, Description, FeedId, PubDate, Read FROM Articles Where feedId = \(feed.id) Order By PubDate Desc")
-        
         var articles = [Article]()
-        for row in data {
-            let url = row["Url"]?.asString()
-            let title = row["Title"]?.asString()
-            let description = row["Description"]?.asString()
-            let feedId = row["FeedId"]?.asInt()
-            let pubDate = row["PubDate"]?.asDouble()
-            let read = row["Read"]?.asInt()
-            
-            let article = Article(title: title!, feed: feed, time: NSDate(timeIntervalSince1970: pubDate!), description: description!, url: url!)
-            articles.append(article)
+        let feedArticle = articlesQuery.filter(ArticleTable.feedId == feed.id)
+        for articleQuery in feedArticle {
+            // id: 1, name: Optional("Alice"), email: alice@mac.com
+            let article = Article(title: articleQuery[ArticleTable.title],
+                feed: feed,
+                time: NSDate(timeIntervalSince1970: articleQuery[ArticleTable.pubDate]),
+                description: articleQuery[ArticleTable.description],
+                url: articleQuery[ArticleTable.url])
+            articles.append( article )
         }
         return articles
     }
     
     func insertArticle(article: Article) {
-        database.execute("INSERT INTO Articles(Url, Title, Description, FeedId, PubDate) Values('\(article.url)', '\(article.title)','\(article.description)',\(article.feed.id),'\(article.time.timeIntervalSince1970)')")
+        
+        if let insertId = articlesQuery.insert(ArticleTable.url <- article.url,
+            ArticleTable.title <- article.url,
+            ArticleTable.description <- article.description,
+            ArticleTable.feedId <- article.feed.id,
+            ArticleTable.pubDate <- article.time.timeIntervalSince1970
+            ) {
+            println("inserted article id: \(insertId)")
+        }
+        
     }
     
     func updateArticle(article: Article) {
-        database.execute("UPDATE Articles SET Title = '\(article.title)', Description = '\(article.description)' , PubDate = \(article.time.timeIntervalSince1970) where Url = '\(article.url)' ")
+        let updates = articlesQuery.filter(ArticleTable.url == article.url)
+        updates.update(ArticleTable.title <- article.title,
+            ArticleTable.description <- article.description,
+            ArticleTable.pubDate <- article.time.timeIntervalSince1970)?
     }
     
     func insertAndUpdateArticle(article: Article) {

@@ -8,8 +8,25 @@
 
 import Foundation
 
+struct NonPersistedFlags : RawOptionSetType {
+    private let value: UInt = 0
+    
+    init(rawValue value: UInt) { self.value = value }
+    init(nilLiteral: ()) {self.value = 0}
+    var rawValue: UInt { return value }
+    
+    var boolValue: Bool { return self.value != 0 }
+    
+    static var allZeros: NonPersistedFlags { return self(rawValue: 0) }
+    static var None: NonPersistedFlags { return self(rawValue: 0) }
+    static var CheckForImage: NonPersistedFlags { return self(rawValue: 1) }
+    static var Error: NonPersistedFlags { return self(rawValue: 1 << 2) }
+    static var Updating: NonPersistedFlags { return self(rawValue: 1 << 3) }
+    static var LoadFullHTML: NonPersistedFlags { return self(rawValue: 1 << 4) }
+}
+
 class Feed {
-    var id: Int
+    var id: Int64
     var name: String
     var url: String
     var parentId: Int
@@ -18,8 +35,17 @@ class Feed {
     var type: Int
     var nextSibling: Int
     var firstChild: Int
+    var nonPersistedFlags: NonPersistedFlags = NonPersistedFlags.allZeros
     
-    init(id: Int, name: String, url: String, parentId: Int, unreadCount: Int , lastUpdated: NSDate , type: Int , nextSibling: Int , firstChild: Int) {
+    func setNonPersistedFlag(flag: NonPersistedFlags) {
+        nonPersistedFlags = nonPersistedFlags | flag
+    }
+    
+    func clearNonPersistedFlag(flag: NonPersistedFlags) {
+        nonPersistedFlags = nonPersistedFlags & ~flag
+    }
+    
+    init(id: Int64, name: String, url: String, parentId: Int = 0, unreadCount: Int = 0, lastUpdated: NSDate = NSDate(timeIntervalSince1970: 0), type: Int = 0 , nextSibling: Int = 0, firstChild: Int = 0) {
         self.id = id
         self.name = name
         self.url = url
@@ -48,6 +74,10 @@ class Feed {
             return "未命名"
         }
         return name
+    }
+    
+    func inUpdating() -> Bool {
+        return nonPersistedFlags & NonPersistedFlags.Updating != NonPersistedFlags.allZeros
     }
 }
 

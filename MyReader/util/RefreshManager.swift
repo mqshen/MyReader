@@ -35,6 +35,7 @@ class RefreshManager {
         for feed in feeds {
             if(!isRefreshingFolder(feed)) {
                 operations.add(feed.url)
+                self.setFolderUpdatingFlag(feed, flag: true)
                 self.pumpSubscriptionRefresh(feed)
             }
         }
@@ -86,8 +87,18 @@ class RefreshManager {
                             PersistenceProcessor.sharedInstance.insertAndUpdateArticle(article)
                         }
                     }
-                    
+                    self.setFolderUpdatingFlag(feed, flag: false)
                 }
         }
+    }
+    
+    func setFolderUpdatingFlag(feed: Feed, flag: Bool) {
+        if (flag) {
+            feed.setNonPersistedFlag(NonPersistedFlags.Updating)
+        }
+        else {
+            feed.clearNonPersistedFlag(NonPersistedFlags.Updating)
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(Constants.FolderUpdate, object: feed)
     }
 }

@@ -8,6 +8,11 @@
 
 import Cocoa
 
+struct Constants {
+    static let FolderAdd = "MR_Notify_FolderAdded"
+    static let FolderUpdate = "MR_Notify_FoldersUpdated"
+}
+
 class ViewController: NSViewController, NSSplitViewDelegate, FoldersTreeDelegate, NSMenuDelegate {
     var folderTree: FoldersTree?
     var contentViewController: ContentViewController?

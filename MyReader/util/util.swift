@@ -53,3 +53,48 @@ extension String {
         return substr
     }
 }
+
+extension NSMutableString {
+    func fixupRelativeImgTags(baseURL: String, length: Int? = nil, start:Int = 0) {
+        if let url = baseURL.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding) {
+            let imgBaseURL = NSURL(string: url)
+            var textLength = self.length
+            var srchRange = NSMakeRange(start, textLength - start)
+            
+            srchRange = self.rangeOfString("<img", options: NSStringCompareOptions.LiteralSearch, range: srchRange)
+            srchRange.length = textLength - srchRange.location
+            
+            if ( srchRange.location != NSNotFound) {
+                var srcRange = self.rangeOfString("src=\"", options:NSStringCompareOptions.LiteralSearch, range:srchRange)
+                if (srcRange.location != NSNotFound) {
+                    // Find the src parameter range.
+                    var index = srcRange.location + srcRange.length
+                    srcRange.location += srcRange.length
+                    srcRange.length = 0
+                    while (index < textLength && self.characterAtIndex(index) != 34) {
+                        index = index + 1
+                        srcRange.length += 1
+                    }
+                    
+                    // Now extract the source parameter
+                    var srcPath = self.substringWithRange(srcRange)
+                    if (!srcPath.hasPrefix("http:") && !srcPath.hasPrefix("https:") && !srcPath.hasPrefix("data:")) {
+                        var imgURL = NSURL(string:srcPath, relativeToURL:imgBaseURL)
+                        if let imgURL = imgURL {
+                            srcPath = imgURL.absoluteString!
+                            self.replaceCharactersInRange(srcRange, withString:srcPath)
+                            textLength = self.length
+                        }
+                    }
+                    
+                    // Start searching again from beyond the URL
+                    srchRange.location = srcRange.location + countElements(srcPath)
+                }
+                else {
+                    srchRange.location = srchRange.location + 1
+                }
+                self.fixupRelativeImgTags(baseURL, length: textLength - srchRange.location, start: srchRange.location )
+            }
+        }
+    }
+}

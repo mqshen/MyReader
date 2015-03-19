@@ -1,0 +1,39 @@
+body {
+    font-family: "Helvetica Neue","Helvetica","Arial",sans-serif;
+    height: 100%;
+}
+h3 {
+    display: block;
+    font-size: 1.17em;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+    margin-top : 10px;
+}
+.article-title {
+    margin: 0;
+    font-size: 1.563rem;
+    line-height: 1.200em;
+}
+
+.article-title  a {
+    color: #111;
+    text-decoration: none;
+}
+.article-meta {
+    color: #555;
+    font-size: 0.813rem;
+    margin: 0.125em 0 1em;
+}
+.article-body {
+    font-size: 0.938rem;
+    line-height: 1.467em;
+    -webkit-font-smoothing: auto;
+}
+.article-meta-item, .article-meta-item-link {
+    padding: 2px 4px;
+    color: #606060;
+    display: inline-block;
+}
