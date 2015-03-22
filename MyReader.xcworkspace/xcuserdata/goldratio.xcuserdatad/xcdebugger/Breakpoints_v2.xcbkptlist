@@ -6,32 +6,62 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyReader/widget/FolderTree.swift"
-            timestampString = "448472483.20066"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "104"
-            endingLineNumber = "104"
-            landmarkName = "outlineView(_:willDisplayCell:forTableColumn:item:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MyReader/widget/FolderTree.swift"
-            timestampString = "448472702.396033"
+            filePath = "MyReader/util/FeedRefreshOperation.swift"
+            timestampString = "448687312.597307"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "189"
             endingLineNumber = "189"
-            landmarkName = "updateFolder(_:recurseToParents:)"
+            landmarkName = "connectionDidFinishLoading(_:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MyReader.FeedRefreshOperation.connectionDidFinishLoading (MyReader.FeedRefreshOperation)(Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.NSURLConnection&gt;) -&gt; ()"
+                  moduleName = "MyReader"
+                  urlString = "file:///Users/goldratio/WorkspaceGroup/RssWorkspace/MyReader/MyReader/util/FeedRefreshOperation.swift"
+                  timestampString = "448686039.071519"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "189"
+                  endingLineNumber = "189"
+                  offsetFromSymbolStart = "27">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MyReader.FeedRefreshOperation.(connectionDidFinishLoading (MyReader.FeedRefreshOperation) -&gt; (Swift.ImplicitlyUnwrappedOptional&lt;ObjectiveC.NSURLConnection&gt;) -&gt; ()).(closure #1)"
+                  moduleName = "MyReader"
+                  urlString = "file:///Users/goldratio/WorkspaceGroup/RssWorkspace/MyReader/MyReader/util/FeedRefreshOperation.swift"
+                  timestampString = "448686039.071698"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "190"
+                  endingLineNumber = "190"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyReader/util/FeedRefreshOperation.swift"
+            timestampString = "448687312.597307"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
+            landmarkName = "connectionDidFinishLoading(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +71,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MyReader/widget/FolderTree.swift"
-            timestampString = "448472483.20066"
+            filePath = "MyReader/util/RefreshManager.swift"
+            timestampString = "448687456.302398"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "123"
-            endingLineNumber = "123"
-            landmarkName = "outlineView(_:viewForTableColumn:item:)"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "pumpFolderIconRefresh(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MyReader/util/RefreshManager.swift"
+            timestampString = "448687456.302398"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
+            landmarkName = "pumpFolderIconRefresh(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

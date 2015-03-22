@@ -39,7 +39,8 @@ class ContentViewController: NSViewController, NSSplitViewDelegate, ArticleSelec
         articlesViewController?.view.autoresizingMask = NSAutoresizingMaskOptions.ViewWidthSizable |  NSAutoresizingMaskOptions.ViewHeightSizable
         articlesViewController?.articleDelegate = self
         
-        webView = WebView()
+        webView = WebView(frame: CGRectMake(0, 0, 900, 900))
+        
         //webView?.autoresizingMask = NSAutoresizingMaskOptions.ViewWidthSizable |  NSAutoresizingMaskOptions.ViewHeightSizable
         splitView.addSubview(webView!)
         splitView.setPosition(200, ofDividerAtIndex: 0)
@@ -132,7 +133,6 @@ class ContentViewController: NSViewController, NSSplitViewDelegate, ArticleSelec
         
         htmlText.appendString(articleBody)
         htmlText.appendString("</div></body></html>")
-        println(htmlText)
         return htmlText
     }
    

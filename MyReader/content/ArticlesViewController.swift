@@ -26,7 +26,7 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
     struct Static {
         static let rowIdentify = "articleRow"
         static let cellIdentify = "articleCell"
-        static let backgroundColor = NSColorFromRGB(0x585858, aplpha: 1)
+        static let backgroundColor = NSColorFromRGB(0xDFDEDB)
     }
     
     override func loadView() {
@@ -95,6 +95,7 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
         var rowView = tableView.makeViewWithIdentifier(Static.rowIdentify, owner: self) as? DarkVibrancyAwareTableRowView
         if(rowView == nil) {
             rowView = DarkVibrancyAwareTableRowView()
+            rowView?.selectedBackgroundColor = Static.backgroundColor
             rowView?.identifier = Static.rowIdentify
         }
         return rowView
@@ -105,7 +106,7 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
     }
     
     func tableView(tableView: NSTableView, isGroupRow row: Int) -> Bool {
-        return true
+        return false
     }
     
     func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
@@ -115,11 +116,16 @@ class ArticlesViewController: NSViewController, NSTableViewDataSource, NSTableVi
     func tableView(tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         if let articles = self.articles {
             let article = articles[row]
+            if(!article.readed) {
+                article.readed = true
+                let rows = NSIndexSet(index: row)
+                let cols = NSIndexSet(index: 0)
+                tableView.reloadDataForRowIndexes(rows, columnIndexes: cols)
+                PersistenceProcessor.sharedInstance.setReaded(article)
+            }
             self.articleDelegate?.selectedArticle(article)
         }
         return true
     }
-   
-    
 
 }

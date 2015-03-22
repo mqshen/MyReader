@@ -14,19 +14,34 @@ class TreeNode : Equatable {
     var feed: Feed
     var progressIndicator: NSProgressIndicator?
     
-    init(feeds: [Feed]) {
-        self.feed = Feed(id: 0, name: "", url: "", parentId: 0, unreadCount: 0, lastUpdated: NSDate(), type: 1, nextSibling: 0, firstChild: 0)
-        self.children = [TreeNode]()
-        func build(treeNode: TreeNode, parendId: Int) {
-            for feed in feeds {
-                if(feed.parentId == parendId) {
-                    let node = TreeNode(feed: feed, nodeId: feed.id)
-                    node.parentNode = self
-                    self.children.append(node)
+    var unReadCount: Int {
+        get {
+            var count = 0
+            if(canHaveChild()) {
+                for node in children {
+                    count += node.unReadCount
                 }
+                return count
+            }
+            return feed.unreadCount
+        }
+    }
+    
+    func build(feeds: [Feed], treeNode: TreeNode, parendId: Int64) {
+        for feed in feeds {
+            if(feed.parentId == parendId) {
+                let node = TreeNode(feed: feed, nodeId: feed.id)
+                node.parentNode = treeNode
+                treeNode.children.append(node)
+                build(feeds, treeNode: node, parendId: feed.id)
             }
         }
-        build(self, 0)
+    }
+    
+    init() {
+        self.feed = Feed(id: 0, name: "", url: "", parentId: 0, unreadCount: 0, lastUpdated: NSDate(), type: 0, nextSibling: 0, firstChild: 0)
+        self.children = [TreeNode]()
+       
     }
     
     init(feed: Feed, nodeId: Int64) {
@@ -35,7 +50,7 @@ class TreeNode : Equatable {
     }
     
     func canHaveChild() -> Bool {
-        return feed.type == 1
+        return feed.type == 0
     }
     
     func countOfChildren() -> Int {
@@ -48,6 +63,15 @@ class TreeNode : Equatable {
     
     func addChild(node: TreeNode) {
         self.children.append(node)
+    }
+    
+    func removeChild(node: TreeNode) {
+        self.children.removeObject(node)
+    }
+    
+    func removeFromParent() {
+        self.parentNode?.removeChild(self)
+        self.parentNode = nil
     }
    
     func nodeFromID(n: Int64) -> TreeNode? {

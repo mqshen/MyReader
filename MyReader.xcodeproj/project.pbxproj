@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		47CB58931A8F4CB1580F7AFD /* Pods_MyReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD63E917C948A9C94AE00F0F /* Pods_MyReader.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		F103F5FB1ABC2808006BF858 /* rssFolder.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F103F5F91ABC2808006BF858 /* rssFolder.tiff */; };
+		F103F5FC1ABC2808006BF858 /* rssFolder@2x.tiff in Resources */ = {isa = PBXBuildFile; fileRef = F103F5FA1ABC2808006BF858 /* rssFolder@2x.tiff */; };
 		F12F66661ABA9A2000CCBD79 /* default.css in Copy Files */ = {isa = PBXBuildFile; fileRef = F12F66621ABA994300CCBD79 /* default.css */; };
 		F12F66671ABA9A2000CCBD79 /* fire.css in Copy Files */ = {isa = PBXBuildFile; fileRef = F12F66641ABA998400CCBD79 /* fire.css */; };
 		F15136791AB83ADC00172230 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F15136771AB83ADC00172230 /* Main.storyboard */; };
@@ -22,6 +24,7 @@
 		F1655AC11AB70551005ACFF5 /* FolderTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655AB91AB70551005ACFF5 /* FolderTree.swift */; };
 		F1655AC21AB70551005ACFF5 /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655ABA1AB70551005ACFF5 /* FolderView.swift */; };
 		F1655AC31AB70551005ACFF5 /* FeedListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655ABC1AB70551005ACFF5 /* FeedListController.swift */; };
+		F18C35181ABDB3CC002AE068 /* FeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C35171ABDB3CC002AE068 /* FeedOperation.swift */; };
 		F195561E1ABA5F4E00FDBADF /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19556151ABA5F2500FDBADF /* SQLite.framework */; };
 		F19556221ABA5FAA00FDBADF /* SQLite.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F19556151ABA5F2500FDBADF /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F1A374B61AB8503E004DEE6D /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A374B51AB8503E004DEE6D /* SubscriptionViewController.swift */; };
@@ -29,6 +32,7 @@
 		F1A374BA1AB87870004DEE6D /* RefreshManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A374B91AB87870004DEE6D /* RefreshManager.swift */; };
 		F1A374BC1AB87BFB004DEE6D /* HashSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A374BB1AB87BFB004DEE6D /* HashSet.swift */; };
 		F1A374BE1AB87C75004DEE6D /* SetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A374BD1AB87C75004DEE6D /* SetType.swift */; };
+		F1A709641ABD2151001165D4 /* FeedRefreshOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A709631ABD2151001165D4 /* FeedRefreshOperation.swift */; };
 		F1CFD0D51AB7B58700FDCCDF /* DarkVibrancyAwareTableRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CFD0D41AB7B58700FDCCDF /* DarkVibrancyAwareTableRowView.swift */; };
 		F1F0E27B1AB7C00100643B53 /* util.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F0E27A1AB7C00100643B53 /* util.swift */; };
 		F1F0E27D1AB7C4BD00643B53 /* ImageAndTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1F0E27C1AB7C4BD00643B53 /* ImageAndTextView.swift */; };
@@ -113,6 +117,8 @@
 		11DDEE5E3D176A64F64147F4 /* Pods-MyReader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReader.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyReader/Pods-MyReader.release.xcconfig"; sourceTree = "<group>"; };
 		733C6C66A81F642077692747 /* Pods-MyReader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyReader.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyReader/Pods-MyReader.debug.xcconfig"; sourceTree = "<group>"; };
 		BD63E917C948A9C94AE00F0F /* Pods_MyReader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyReader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F103F5F91ABC2808006BF858 /* rssFolder.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = rssFolder.tiff; path = "../../../vienna-rss/Resources/rssFolder.tiff"; sourceTree = "<group>"; };
+		F103F5FA1ABC2808006BF858 /* rssFolder@2x.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = "rssFolder@2x.tiff"; path = "../../../vienna-rss/Resources/rssFolder@2x.tiff"; sourceTree = "<group>"; };
 		F12F66621ABA994300CCBD79 /* default.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = default.css; sourceTree = "<group>"; };
 		F12F66641ABA998400CCBD79 /* fire.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = fire.css; sourceTree = "<group>"; };
 		F15136781AB83ADC00172230 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -133,13 +139,16 @@
 		F1655AB91AB70551005ACFF5 /* FolderTree.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderTree.swift; sourceTree = "<group>"; };
 		F1655ABA1AB70551005ACFF5 /* FolderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		F1655ABC1AB70551005ACFF5 /* FeedListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedListController.swift; sourceTree = "<group>"; };
+		F18C35171ABDB3CC002AE068 /* FeedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedOperation.swift; sourceTree = "<group>"; };
 		F195560C1ABA5F2500FDBADF /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
-		F19556241ABA653300FDBADF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
+		F19556241ABA653300FDBADF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../MyPlayground.playground; sourceTree = "<group>"; };
 		F1A374B51AB8503E004DEE6D /* SubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
 		F1A374B71AB86996004DEE6D /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		F1A374B91AB87870004DEE6D /* RefreshManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
 		F1A374BB1AB87BFB004DEE6D /* HashSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashSet.swift; sourceTree = "<group>"; };
 		F1A374BD1AB87C75004DEE6D /* SetType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetType.swift; sourceTree = "<group>"; };
+		F1A709631ABD2151001165D4 /* FeedRefreshOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedRefreshOperation.swift; sourceTree = "<group>"; };
+		F1B0359A1ABBFAD000DC708F /* SWXMLHash.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SWXMLHash.framework; path = "Pods/../build/Debug/Pods-MyReader/SWXMLHash.framework"; sourceTree = "<group>"; };
 		F1CFD0D41AB7B58700FDCCDF /* DarkVibrancyAwareTableRowView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DarkVibrancyAwareTableRowView.swift; sourceTree = "<group>"; };
 		F1F0E27A1AB7C00100643B53 /* util.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = util.swift; sourceTree = "<group>"; };
 		F1F0E27C1AB7C4BD00643B53 /* ImageAndTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAndTextView.swift; sourceTree = "<group>"; };
@@ -174,6 +183,7 @@
 		96D435C8E00E61F7B59F652B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F1B0359A1ABBFAD000DC708F /* SWXMLHash.framework */,
 				F1A374B71AB86996004DEE6D /* libsqlite3.0.dylib */,
 				F15BBA471AB82F1400743B37 /* libsqlite3.dylib */,
 				BD63E917C948A9C94AE00F0F /* Pods_MyReader.framework */,
@@ -210,7 +220,6 @@
 		F1655A8A1AB70391005ACFF5 = {
 			isa = PBXGroup;
 			children = (
-				F19556241ABA653300FDBADF /* MyPlayground.playground */,
 				F195560C1ABA5F2500FDBADF /* SQLite.xcodeproj */,
 				F1655A951AB70391005ACFF5 /* MyReader */,
 				F1655AA81AB70391005ACFF5 /* MyReaderTests */,
@@ -232,6 +241,7 @@
 		F1655A951AB70391005ACFF5 /* MyReader */ = {
 			isa = PBXGroup;
 			children = (
+				F19556241ABA653300FDBADF /* MyPlayground.playground */,
 				F15BBA3D1AB82AE400743B37 /* database */,
 				F1F0E2791AB7BFF900643B53 /* util */,
 				F1655AB51AB70551005ACFF5 /* Resources */,
@@ -278,6 +288,8 @@
 		F1655AB51AB70551005ACFF5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F103F5F91ABC2808006BF858 /* rssFolder.tiff */,
+				F103F5FA1ABC2808006BF858 /* rssFolder@2x.tiff */,
 				F1F0E27E1AB7CBFF00643B53 /* statusBarIcon.png */,
 				F1F0E27F1AB7CBFF00643B53 /* statusBarIconUnread.png */,
 			);
@@ -342,6 +354,8 @@
 				F1A374B91AB87870004DEE6D /* RefreshManager.swift */,
 				F1A374BB1AB87BFB004DEE6D /* HashSet.swift */,
 				F1A374BD1AB87C75004DEE6D /* SetType.swift */,
+				F1A709631ABD2151001165D4 /* FeedRefreshOperation.swift */,
+				F18C35171ABDB3CC002AE068 /* FeedOperation.swift */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -469,7 +483,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F103F5FB1ABC2808006BF858 /* rssFolder.tiff in Resources */,
 				F1655A9D1AB70391005ACFF5 /* Images.xcassets in Resources */,
+				F103F5FC1ABC2808006BF858 /* rssFolder@2x.tiff in Resources */,
 				F1F0E2801AB7CBFF00643B53 /* statusBarIcon.png in Resources */,
 				F1F0E2811AB7CBFF00643B53 /* statusBarIconUnread.png in Resources */,
 				F15136791AB83ADC00172230 /* Main.storyboard in Resources */,
@@ -550,11 +566,13 @@
 				F1A374BE1AB87C75004DEE6D /* SetType.swift in Sources */,
 				F1655AC31AB70551005ACFF5 /* FeedListController.swift in Sources */,
 				F1CFD0D51AB7B58700FDCCDF /* DarkVibrancyAwareTableRowView.swift in Sources */,
+				F18C35181ABDB3CC002AE068 /* FeedOperation.swift in Sources */,
 				F15BBA401AB82AE400743B37 /* PersistenceProcessor.swift in Sources */,
 				F15BBA381AB8197300743B37 /* Article.swift in Sources */,
 				F1655AC21AB70551005ACFF5 /* FolderView.swift in Sources */,
 				F15BBA3A1AB81B7C00743B37 /* ArticleRowView.swift in Sources */,
 				F1655AC11AB70551005ACFF5 /* FolderTree.swift in Sources */,
+				F1A709641ABD2151001165D4 /* FeedRefreshOperation.swift in Sources */,
 				F1F0E27D1AB7C4BD00643B53 /* ImageAndTextView.swift in Sources */,
 				F1A374BC1AB87BFB004DEE6D /* HashSet.swift in Sources */,
 			);
@@ -679,6 +697,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug/Pods-MyReader",
+				);
 				INFOPLIST_FILE = MyReader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -694,6 +716,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug/Pods-MyReader",
+				);
 				INFOPLIST_FILE = MyReader/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

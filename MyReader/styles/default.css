@@ -37,3 +37,9 @@ h3 {
     color: #606060;
     display: inline-block;
 }
+code, pre,
+textarea, input,
+iframe, object,
+embed, video {
+    max-width: 100%;
+}

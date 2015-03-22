@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cocoa
 
 struct NonPersistedFlags : RawOptionSetType {
     private let value: UInt = 0
@@ -19,7 +20,7 @@ struct NonPersistedFlags : RawOptionSetType {
     
     static var allZeros: NonPersistedFlags { return self(rawValue: 0) }
     static var None: NonPersistedFlags { return self(rawValue: 0) }
-    static var CheckForImage: NonPersistedFlags { return self(rawValue: 1) }
+    static var FreshingIcon: NonPersistedFlags { return self(rawValue: 1) }
     static var Error: NonPersistedFlags { return self(rawValue: 1 << 2) }
     static var Updating: NonPersistedFlags { return self(rawValue: 1 << 3) }
     static var LoadFullHTML: NonPersistedFlags { return self(rawValue: 1 << 4) }
@@ -28,13 +29,28 @@ struct NonPersistedFlags : RawOptionSetType {
 class Feed {
     var id: Int64
     var name: String
+    var homePage: String?
     var url: String
-    var parentId: Int
+    var parentId: Int64
     var unreadCount: Int
     var lastUpdated: NSDate
     var type: Int
-    var nextSibling: Int
-    var firstChild: Int
+    var nextSibling: Int64
+    var firstChild: Int64
+    private var _icon: NSImage?
+    var icon: NSImage? {
+        get {
+            if(type == 0) {
+                return NSImage(named: "rssFolder.tiff")
+            }
+            else {
+                return _icon
+            }
+        }
+        set {
+            self._icon = newValue
+        }
+    }
     var nonPersistedFlags: NonPersistedFlags = NonPersistedFlags.allZeros
     
     func setNonPersistedFlag(flag: NonPersistedFlags) {
@@ -45,10 +61,11 @@ class Feed {
         nonPersistedFlags = nonPersistedFlags & ~flag
     }
     
-    init(id: Int64, name: String, url: String, parentId: Int = 0, unreadCount: Int = 0, lastUpdated: NSDate = NSDate(timeIntervalSince1970: 0), type: Int = 0 , nextSibling: Int = 0, firstChild: Int = 0) {
+    init(id: Int64 , name: String, url: String, homePage: String? = nil, parentId: Int64 = 0, unreadCount: Int = 0, lastUpdated: NSDate = NSDate(timeIntervalSince1970: 0), type: Int = 0 , nextSibling: Int64 = 0, firstChild: Int64 = 0) {
         self.id = id
         self.name = name
         self.url = url
+        self.homePage = homePage
         self.parentId = parentId
         self.unreadCount = unreadCount
         self.lastUpdated = lastUpdated
@@ -57,17 +74,18 @@ class Feed {
         self.firstChild = firstChild
     }
     
-    init(name: String, feed: Feed) {
-        self.id = feed.id
-        self.name = name
-        self.url = feed.url
-        self.parentId = feed.parentId
-        self.unreadCount = feed.unreadCount
-        self.lastUpdated = feed.lastUpdated
-        self.type = feed.type
-        self.nextSibling = feed.nextSibling
-        self.firstChild = feed.firstChild
-    }
+//    init(name: String, feed: Feed) {
+//        self.id = feed.id
+//        self.name = name
+//        self.url = feed.url
+//        self.parentId = feed.parentId
+//        self.homePage = feed.homePage
+//        self.unreadCount = feed.unreadCount
+//        self.lastUpdated = feed.lastUpdated
+//        self.type = feed.type
+//        self.nextSibling = feed.nextSibling
+//        self.firstChild = feed.firstChild
+//    }
     
     func fullName() -> String {
         if(name.isEmpty) {
@@ -79,6 +97,11 @@ class Feed {
     func inUpdating() -> Bool {
         return nonPersistedFlags & NonPersistedFlags.Updating != NonPersistedFlags.allZeros
     }
+    
+    func inFreshingIcon() -> Bool {
+        return nonPersistedFlags & NonPersistedFlags.FreshingIcon != NonPersistedFlags.allZeros
+    }
+    
 }
 
 class Article {

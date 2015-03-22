@@ -11,6 +11,8 @@ import Cocoa
 struct Constants {
     static let FolderAdd = "MR_Notify_FolderAdded"
     static let FolderUpdate = "MR_Notify_FoldersUpdated"
+    static let FolderDelete = "MR_Notify_FoldersDelete"
+    static let IconSize = NSMakeSize(16, 16)
 }
 
 class ViewController: NSViewController, NSSplitViewDelegate, FoldersTreeDelegate, NSMenuDelegate {
@@ -21,14 +23,8 @@ class ViewController: NSViewController, NSSplitViewDelegate, FoldersTreeDelegate
         let view = NSView(frame: NSMakeRect(0, 0, 1024, 768))
         self.view = view
         
-        NSApplication.sharedApplication().menu?.delegate = self
-        
         let splitView = NSSplitView(frame: self.view.bounds)
         splitView.autoresizingMask = NSAutoresizingMaskOptions.ViewWidthSizable |  NSAutoresizingMaskOptions.ViewHeightSizable
-        
-//        self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: splitView, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: 0))
-//        
-//        self.view.addConstraint(NSLayoutConstraint(item: self.view, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: splitView, attribute: NSLayoutAttribute.Height, multiplier: 1, constant: 0))
         
         
         splitView.dividerStyle = NSSplitViewDividerStyle.Thin
@@ -40,11 +36,13 @@ class ViewController: NSViewController, NSSplitViewDelegate, FoldersTreeDelegate
         
         RefreshManager.sharedInstance.refresh(feeds)
         
-        let rootNode = TreeNode(feeds: feeds)
+        let rootNode = TreeNode()
+        rootNode.build(feeds, treeNode: rootNode, parendId: 0)
         
         folderTree = FoldersTree(rootNode: rootNode, frame: NSMakeRect(0, 0, 200, 768))
         folderTree!.delegate = self
         splitView.addSubview(folderTree!)
+        
         
         folderTree?.autoresizingMask = NSAutoresizingMaskOptions.ViewWidthSizable |  NSAutoresizingMaskOptions.ViewHeightSizable
         
@@ -55,6 +53,7 @@ class ViewController: NSViewController, NSSplitViewDelegate, FoldersTreeDelegate
         self.view.addSubview(splitView)
         
         splitView.adjustSubviews()
+        RefreshManager.sharedInstance.refreshFolderIconCacheForSubscriptions(rootNode)
     }
 
     override func viewDidLoad() {

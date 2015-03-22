@@ -46,9 +46,9 @@ class ArticleRowView: NSView {
             
             top = top - 5
             
-            var font = NSFont.systemFontOfSize(16)
+            var font = NSFont.systemFontOfSize(14)
             if(!article.readed) {
-                font = NSFont.boldSystemFontOfSize(16)
+                font = NSFont.boldSystemFontOfSize(14)
             }
             let titleFontAttributes = [
                 NSFontAttributeName : font,
@@ -56,7 +56,7 @@ class ArticleRowView: NSView {
             ]
             
             let title = NSAttributedString(string: article.title, attributes: titleFontAttributes)
-            let rowNumber = ceil(title.size.width / contentWidth)
+            let rowNumber = min(ceil(title.size.width / contentWidth), 2)
             let height: CGFloat = rowNumber * 18
             top = top - height
             title.drawInRect(CGRectMake(leftPadding, top, contentWidth, height))

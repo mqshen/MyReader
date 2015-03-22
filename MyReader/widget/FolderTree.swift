@@ -17,6 +17,7 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
     
     struct Static {
         static let cellIdentify = "folderCell"
+        static let rowIdentify = "folderRow"
         static let backgroundColor = NSColorFromRGB(0x585858, aplpha: 1)
     }
     
@@ -36,31 +37,45 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
         
         self.outlineView = NSOutlineView(frame: scrollView.bounds)
         self.outlineView!.autoresizingMask = NSAutoresizingMaskOptions.ViewWidthSizable |  NSAutoresizingMaskOptions.ViewHeightSizable
+        self.outlineView?.menu = buildTreeMenu()
+        
         
         scrollView.backgroundColor = NSColor.clearColor()
         scrollView.contentView.backgroundColor = NSColor.redColor()
         
         
-        outlineView?.backgroundColor = Static.backgroundColor
-        outlineView!.setDataSource(self)
-        outlineView!.setDelegate(self)
+        self.outlineView?.backgroundColor = Static.backgroundColor
+        self.outlineView?.setDataSource(self)
+        self.outlineView?.setDelegate(self)
+        self.outlineView?.action = "handleSingleClick:"
+        self.outlineView?.floatsGroupRows = false
+        //self.outlineView?.doubleAction = ""
         
         let column = NSTableColumn(identifier: "column")
-        column.title = "111"
+        column.title = ""
+        column.width = 200
         //column.autoresizingMask = NSAutoresizingMaskOptions.ViewWidthSizable |  NSAutoresizingMaskOptions.ViewHeightSizable
         column.resizingMask = NSTableColumnResizingOptions.AutoresizingMask
-        outlineView?.addTableColumn(column)
+        self.outlineView?.addTableColumn(column)
         
         
-        scrollView.contentView.addSubview(self.outlineView!)
+        scrollView.documentView = self.outlineView
         self.addSubview(scrollView)
-        outlineView?.reloadData()
+        self.outlineView?.reloadData()
 
         let nc = NSNotificationCenter.defaultCenter()
         nc.addObserver(self, selector: "handleFolderUpdate:", name: Constants.FolderUpdate, object: nil)
         nc.addObserver(self, selector: "handleFolderAdded:", name: Constants.FolderAdd, object: nil)
+        nc.addObserver(self, selector: "handleFolderDelete:", name: Constants.FolderDelete, object: nil)
     }
 
+    func buildTreeMenu() -> NSMenu {
+        let treeMenu = NSMenu()
+        let deleteMenu = NSMenuItem(title: "Delete", action: "deleteNode:", keyEquivalent: "")
+        treeMenu.addItem(deleteMenu)
+        return treeMenu
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -86,6 +101,7 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
         return rootNode.childByIndex(index)
     }
     
+    
     func outlineView(outlineView: NSOutlineView, setObjectValue object: AnyObject?, forTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) {
         if let node = item as? TreeNode {
         }
@@ -104,7 +120,6 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
         if(tableColumn?.identifier ==  "folderColumns") {
             let node = item as TreeNode
             let folder = node.feed
-            println("cell display")
         }
     }
     
@@ -121,32 +136,55 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
     func outlineView(outlineView: NSOutlineView, viewForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSView? {
         //var result = outlineView.makeViewWithIdentifier("DataCell", owner: self) as NSTableCellView
         if let node = item as? TreeNode {
-            var result = ImageAndTextView()
-            let test = NSImage(named: "statusBarIconUnread.png")
-            result.iconImage = test
-            result.text = node.feed.fullName()
-            result.inProgress = node.feed.inUpdating()
-            return result
+            
+            var cellView = outlineView.makeViewWithIdentifier(Static.cellIdentify, owner: self) as? ImageAndTextView
+            if(cellView == nil) {
+                cellView = ImageAndTextView()
+                cellView?.identifier = Static.cellIdentify
+            }
+            let icon = node.feed.icon != nil ? node.feed.icon : NSImage(named: "statusBarIconUnread.png")
+            cellView?.iconImage = icon
+            cellView?.text = node.feed.fullName()
+            cellView?.inProgress = node.feed.inUpdating()
+            cellView?.count = node.unReadCount
+            if(node.feed.parentId != 0 ) {
+                cellView?.leftPadding = 15
+            }
+            else {
+                cellView?.leftPadding = 0
+            }
+            
+            return cellView
         }
         return nil
     }
     
     func outlineView(outlineView: NSOutlineView, rowViewForItem item: AnyObject) -> NSTableRowView? {
-        var rowView = outlineView.makeViewWithIdentifier(Static.cellIdentify, owner: self) as? DarkVibrancyAwareTableRowView
+        var rowView = outlineView.makeViewWithIdentifier(Static.rowIdentify, owner: self) as? DarkVibrancyAwareTableRowView
         if(rowView == nil) {
             rowView = DarkVibrancyAwareTableRowView()
-            rowView?.identifier = Static.cellIdentify
+            rowView?.identifier = Static.rowIdentify
         }
         return rowView
     }
     
     func outlineView(outlineView: NSOutlineView, isGroupItem item: AnyObject) -> Bool {
+        if let node = item as? TreeNode {
+            if(node == rootNode) {
+                return false
+            }
+            else if(node.canHaveChild()) {
+                return true
+            }
+        }
         return false
     }
    
     func outlineView(outlineView: NSOutlineView, heightOfRowByItem item: AnyObject) -> CGFloat {
         return 30
     }
+    
+   
     
     func outlineView(outlineView: NSOutlineView, didAddRowView rowView: NSTableRowView, forRow row: Int) {
         rowView.backgroundColor = Static.backgroundColor
@@ -160,7 +198,24 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
         }
         return true
     }
-
+    
+    func handleSingleClick(outlineView: NSOutlineView) {
+        if let node = outlineView.itemAtRow(outlineView.clickedRow) as? TreeNode {
+            if(node.canHaveChild()) {
+                if(outlineView.isItemExpanded(node)) {
+                    outlineView.collapseItem(node)
+                }
+                else {
+                    outlineView.expandItem(node)
+                }
+            }
+        }
+    }
+    
+   
+    func outlineView(outlineView: NSOutlineView, shouldShowOutlineCellForItem item: AnyObject) -> Bool {
+        return true
+    }
     
     func handleFolderAdded(nc: NSNotification) {
         if let feed = nc.object as? Feed {
@@ -182,12 +237,22 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
         }
     }
     
+    
+    func handleFolderDelete(nc: NSNotification) {
+        if let feed = nc.object as? Feed {
+            if let node = self.rootNode.nodeFromID(feed.id) {
+                if let parentNode = node.parentNode? {
+                    node.removeFromParent()
+                    self.reloadFolderItem(parentNode)
+                }
+            }
+        }
+    }
+    
     func updateFolder(feedId: Int64, recurseToParents: Bool) {
         if var node = rootNode.nodeFromID(feedId) {
-            let range = NSMakeRange(0, 3)
             let rows = NSIndexSet(index: outlineView!.rowForItem(node))
             let cols = NSIndexSet(index: 0)
-            outlineView?.endUpdates()
             outlineView?.reloadDataForRowIndexes(rows, columnIndexes: cols)
             if(recurseToParents) {
                 while(node.parentNode != nil && node.parentNode != rootNode) {
@@ -206,14 +271,31 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
             outlineView?.reloadData()
         }
         else {
-            let rows = NSIndexSet(index: 1)
-            let cols = NSIndexSet(index: 0)
-            outlineView?.reloadDataForRowIndexes(rows, columnIndexes: cols)
+            outlineView?.reloadItem(node, reloadChildren: true)
+//            let rowIndex = outlineView!.rowForItem(node)
+//            var rows = NSIndexSet(index: rowIndex)
+//            var cols = NSIndexSet(index: 0)
+//            if(node.canHaveChild()) {
+//                let range = NSMakeRange(0, 100)
+//                rows = NSIndexSet(indexesInRange: range)
+//                var cols = NSIndexSet(indexesInRange: NSMakeRange(0, 2))
+//            }
+//            outlineView?.reloadDataForRowIndexes(rows, columnIndexes: cols)
             //outlineView?.reloadItem(node, reloadChildren: true)
         }
     }
     
     func tableViewSelectionDidChange(notification: NSNotification) {
         println("row selected")
+    }
+    
+    func deleteNode(sender: AnyObject?) -> Bool {
+        if let selectedRow = self.outlineView?.selectedRow {
+            if let node = self.outlineView?.itemAtRow(selectedRow) as? TreeNode {
+                PersistenceProcessor.sharedInstance.deleteFeed(node.feed)
+                return true
+            }
+        }
+        return false
     }
 }

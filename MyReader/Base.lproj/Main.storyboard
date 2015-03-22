@@ -66,6 +66,12 @@
                                                 <action selector="newSubscriptionMenuItemClicked:" target="Voe-Tx-rLC" id="TMp-hQ-5M3"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Import Subscription…" id="K0d-O5-B4u">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="importSubscription:" target="Voe-Tx-rLC" id="5Wj-kj-WKD"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>
@@ -81,6 +87,11 @@
                                         <menuItem title="Paste" keyEquivalent="v" id="jin-Rd-A9i">
                                             <connections>
                                                 <action selector="paste:" target="Voe-Tx-rLC" id="Rqr-lW-qzd"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Select All" keyEquivalent="a" id="3ul-rm-Hmt">
+                                            <connections>
+                                                <action selector="selectAll:" target="Voe-Tx-rLC" id="z1Y-gq-fe3"/>
                                             </connections>
                                         </menuItem>
                                     </items>

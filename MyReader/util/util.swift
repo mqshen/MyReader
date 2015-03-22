@@ -52,6 +52,12 @@ extension String {
         let substr = self[range]
         return substr
     }
+    func baseURL() -> String {
+        if var url = NSURL(string: self) {
+            return String(format: "%@://%@", url.scheme!, url.host!)
+        }
+        return self
+    }
 }
 
 extension NSMutableString {
@@ -95,6 +101,33 @@ extension NSMutableString {
                 }
                 self.fixupRelativeImgTags(baseURL, length: textLength - srchRange.location, start: srchRange.location )
             }
+        }
+    }
+}
+
+extension NSNotificationCenter {
+    
+    func postNotificationOnMainThreadWithName(name: String, object: AnyObject?) {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.postNotificationName(name, object: object)
+        })
+    }
+    
+}
+
+extension Array {
+    mutating func removeObject<U: Equatable>(object: U) {
+        var index: Int?
+        for (idx, objectToCompare) in enumerate(self) {
+            if let to = objectToCompare as? U {
+                if object == to {
+                    index = idx
+                }
+            }
+        }
+        
+        if(index != nil) {
+            self.removeAtIndex(index!)
         }
     }
 }
