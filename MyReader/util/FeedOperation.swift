@@ -25,7 +25,6 @@ class FeedOperation: NSOperation {
     }
     
     override func start() {
-        println("start refresh: \(self.url)")
         
         Alamofire.request(.GET, self.url)
             .responseString { (request, response, string, error) in

@@ -89,7 +89,6 @@ class FeedRefreshOperation: NSOperation {
     
     
     override func start() {
-        println("start \(self.request.URL)")
         synced(self) {
             if self.cancelled {
                 self.finished = true

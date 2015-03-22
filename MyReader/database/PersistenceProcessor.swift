@@ -47,7 +47,12 @@ class PersistenceProcessor
     }
     
     init() {
-        database = Database("wetalk.sqlite3")
+        if let file = NSBundle.mainBundle().pathForResource("wetalk.sqlite3", ofType: nil) {
+            database = Database(file)
+        }
+        else {
+            database = Database("wetalk.sqlite3")
+        }
         
         feedsQuery = database["feeds"]
         
