@@ -25,6 +25,8 @@
 		F1655AC21AB70551005ACFF5 /* FolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655ABA1AB70551005ACFF5 /* FolderView.swift */; };
 		F1655AC31AB70551005ACFF5 /* FeedListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1655ABC1AB70551005ACFF5 /* FeedListController.swift */; };
 		F18C35181ABDB3CC002AE068 /* FeedOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F18C35171ABDB3CC002AE068 /* FeedOperation.swift */; };
+		F18C351E1ABE6FA4002AE068 /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = F18C351C1ABE6FA4002AE068 /* appIcon.png */; };
+		F18C351F1ABE6FA4002AE068 /* appIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F18C351D1ABE6FA4002AE068 /* appIcon@2x.png */; };
 		F195561E1ABA5F4E00FDBADF /* SQLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19556151ABA5F2500FDBADF /* SQLite.framework */; };
 		F19556221ABA5FAA00FDBADF /* SQLite.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F19556151ABA5F2500FDBADF /* SQLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F1A374B61AB8503E004DEE6D /* SubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1A374B51AB8503E004DEE6D /* SubscriptionViewController.swift */; };
@@ -140,6 +142,8 @@
 		F1655ABA1AB70551005ACFF5 /* FolderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderView.swift; sourceTree = "<group>"; };
 		F1655ABC1AB70551005ACFF5 /* FeedListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedListController.swift; sourceTree = "<group>"; };
 		F18C35171ABDB3CC002AE068 /* FeedOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedOperation.swift; sourceTree = "<group>"; };
+		F18C351C1ABE6FA4002AE068 /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appIcon.png; sourceTree = "<group>"; };
+		F18C351D1ABE6FA4002AE068 /* appIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "appIcon@2x.png"; sourceTree = "<group>"; };
 		F195560C1ABA5F2500FDBADF /* SQLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SQLite.xcodeproj; path = SQLite.swift/SQLite.xcodeproj; sourceTree = "<group>"; };
 		F19556241ABA653300FDBADF /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; name = MyPlayground.playground; path = ../MyPlayground.playground; sourceTree = "<group>"; };
 		F1A374B51AB8503E004DEE6D /* SubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionViewController.swift; sourceTree = "<group>"; };
@@ -288,6 +292,8 @@
 		F1655AB51AB70551005ACFF5 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F18C351C1ABE6FA4002AE068 /* appIcon.png */,
+				F18C351D1ABE6FA4002AE068 /* appIcon@2x.png */,
 				F103F5F91ABC2808006BF858 /* rssFolder.tiff */,
 				F103F5FA1ABC2808006BF858 /* rssFolder@2x.tiff */,
 				F1F0E27E1AB7CBFF00643B53 /* statusBarIcon.png */,
@@ -485,8 +491,10 @@
 			files = (
 				F103F5FB1ABC2808006BF858 /* rssFolder.tiff in Resources */,
 				F1655A9D1AB70391005ACFF5 /* Images.xcassets in Resources */,
+				F18C351E1ABE6FA4002AE068 /* appIcon.png in Resources */,
 				F103F5FC1ABC2808006BF858 /* rssFolder@2x.tiff in Resources */,
 				F1F0E2801AB7CBFF00643B53 /* statusBarIcon.png in Resources */,
+				F18C351F1ABE6FA4002AE068 /* appIcon@2x.png in Resources */,
 				F1F0E2811AB7CBFF00643B53 /* statusBarIconUnread.png in Resources */,
 				F15136791AB83ADC00172230 /* Main.storyboard in Resources */,
 			);
