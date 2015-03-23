@@ -95,12 +95,17 @@ class RefreshManager {
                                 let time = elem["updated"].element?.text
                                 let date = self.formatDate(time)
                                 
-                                if let url = elem["link"].element?.attributes["href"]? {
-                                    let description = elem["content"].element?.text
-                                    let article = Article(title: title!, feed: feed, time: date, description: description!, url: url)
-                                    PersistenceProcessor.sharedInstance.insertAndUpdateArticle(article)
-                                    
+                                var url = feed.url
+                                for link in elem["link"] {
+                                    if("self" == link.element?.attributes["rel"]) {
+                                        if let href = link.element?.attributes["href"] {
+                                            url = href
+                                        }
+                                    }
                                 }
+                                let description = elem["content"].element?.text
+                                let article = Article(title: title!, feed: feed, time: date, description: description!, url: url)
+                                PersistenceProcessor.sharedInstance.insertAndUpdateArticle(article)
                             }
                         }
                     }
