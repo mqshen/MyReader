@@ -50,7 +50,8 @@ class RefreshManager {
         if let url = NSURL(string: feed.url)? {
             
             var request = NSMutableURLRequest(URL: url)
-            request.addValue("\(feed.lastUpdated.timeIntervalSince1970)", forHTTPHeaderField: "If-Modified-Since")
+            var timeSince: Int = Int(feed.lastUpdated.timeIntervalSince1970)
+            request.addValue("\(timeSince)", forHTTPHeaderField: "If-Modified-Since")
             
             let operation = FeedRefreshOperation(request: request,
                 progressHandler: nil,
@@ -95,8 +96,13 @@ class RefreshManager {
                                 let time = elem["updated"].element?.text
                                 let date = self.formatDate(time)
                                 
-                                var url = feed.url
+                                var url: String? = nil
                                 for link in elem["link"] {
+                                    if(url == nil) {
+                                        if let href = link.element?.attributes["href"] {
+                                            url = href
+                                        }
+                                    }
                                     if("self" == link.element?.attributes["rel"]) {
                                         if let href = link.element?.attributes["href"] {
                                             url = href
@@ -104,7 +110,7 @@ class RefreshManager {
                                     }
                                 }
                                 let description = elem["content"].element?.text
-                                let article = Article(title: title!, feed: feed, time: date, description: description!, url: url)
+                                let article = Article(title: title!, feed: feed, time: date, description: description!, url: url!)
                                 PersistenceProcessor.sharedInstance.insertAndUpdateArticle(article)
                             }
                         }
