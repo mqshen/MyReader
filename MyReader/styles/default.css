@@ -1,6 +1,7 @@
 body {
     font-family: "Helvetica Neue","Helvetica","Arial",sans-serif;
     height: 100%;
+    margin: 0px 40px;
 }
 h3 {
     display: block;
@@ -40,6 +41,20 @@ h3 {
 code, pre,
 textarea, input,
 iframe, object,
-embed, video {
+embed, video, img {
     max-width: 100%;
+}
+table {
+      margin-bottom: 1.8em;
+}
+table thead th {
+    background: #f1f1f1;
+}
+table td {
+    border: 1px solid #ddd;
+    padding: 0.5em 1em;
+    color: #666;
+}
+tr:nth-child(even) {
+    background-color: #efefee;
 }

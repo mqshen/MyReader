@@ -18,7 +18,7 @@ class ContentViewController: NSViewController, NSSplitViewDelegate, ArticleSelec
     
     override func loadView() {
         if(stylePath == nil) {
-            if let path = NSBundle.mainBundle().sharedSupportPath? {
+            if let path = NSBundle.mainBundle().sharedSupportPath {
                 stylePath = "file://localhost".stringByAppendingString(path.stringByAppendingPathComponent("default.css"))
             }
         }
@@ -72,8 +72,8 @@ class ContentViewController: NSViewController, NSSplitViewDelegate, ArticleSelec
     
     func splitView(splitView: NSSplitView, resizeSubviewsWithOldSize oldSize: NSSize) {
         let dividerThickness: CGFloat = 1.0
-        let sv1: NSView = splitView.subviews[0] as NSView
-        let sv2: NSView  = splitView.subviews[1] as NSView
+        let sv1: NSView = splitView.subviews[0] as! NSView
+        let sv2: NSView  = splitView.subviews[1] as! NSView
         var leftFrame = sv1.frame
         var rightFrame = sv2.frame
         var newFrame = splitView.frame
@@ -99,7 +99,7 @@ class ContentViewController: NSViewController, NSSplitViewDelegate, ArticleSelec
     
     func formatHtml(article: Article) -> String {
         var htmlText = NSMutableString(string: "<!DOCTYPE html><html><head><meta charset=\"UTF-8\" />")
-        if let cssfile = self.stylePath? {
+        if let cssfile = self.stylePath {
             htmlText.appendString("<link rel=\"stylesheet\" type=\"text/css\" href=\"")
             htmlText.appendString(cssfile)
             htmlText.appendString("\"/>")
@@ -131,9 +131,9 @@ class ContentViewController: NSViewController, NSSplitViewDelegate, ArticleSelec
         //[articleBody fixupRelativeAnchorTags:SafeString([theArticle link])];
         //htmlArticle = [[NSMutableString alloc] initWithString:articleBody];
         
-        htmlText.appendString(articleBody)
+        htmlText.appendString(articleBody as String)
         htmlText.appendString("</div></body></html>")
-        return htmlText
+        return htmlText as String
     }
    
 }

@@ -123,12 +123,12 @@ class PersistenceProcessor
             FeedTable.unreadCount <- feed.unreadCount,
             FeedTable.lastUpdated <- feed.lastUpdated.timeIntervalSince1970,
             FeedTable.nextSibling <- feed.nextSibling,
-            FeedTable.firstChild <- feed.firstChild)?
+            FeedTable.firstChild <- feed.firstChild)
         NSNotificationCenter.defaultCenter().postNotificationName(Constants.FolderUpdate, object: feed)
     }
     
     func addSubscription(url: String) {
-        if let insertId = feedsQuery.insert(FeedTable.url <- url, FeedTable.type <- 1) {
+        if let insertId = feedsQuery.insert(FeedTable.url <- url, FeedTable.type <- 1).rowid {
             println("inserted id: \(insertId)")
             let feed = Feed(id: insertId, name: "", url: url, type: 1)
             NSNotificationCenter.defaultCenter().postNotificationName(Constants.FolderAdd, object: feed)
@@ -144,7 +144,7 @@ class PersistenceProcessor
             FeedTable.lastUpdated <- feed.lastUpdated.timeIntervalSince1970,
             FeedTable.nextSibling <- feed.nextSibling,
             FeedTable.type <- feed.type,
-            FeedTable.firstChild <- feed.firstChild) {
+            FeedTable.firstChild <- feed.firstChild).rowid {
                 feed.id = insertId
                 NSNotificationCenter.defaultCenter().postNotificationName(Constants.FolderAdd, object: feed)
                 return insertId
@@ -154,7 +154,7 @@ class PersistenceProcessor
     
     func deleteFeed(feed: Feed) -> Int {
         let deleteStatement = feedsQuery.filter(FeedTable.id == feed.id)
-        if let result = deleteStatement.delete()? {
+        if let result = deleteStatement.delete().changes {
             NSNotificationCenter.defaultCenter().postNotificationName(Constants.FolderDelete, object: feed)
             return result
         }
@@ -209,7 +209,7 @@ class PersistenceProcessor
             ArticleTable.description <- article.description,
             ArticleTable.feedId <- article.feed.id,
             ArticleTable.pubDate <- article.time.timeIntervalSince1970
-            ) {
+            ).rowid {
                 println("inserted article id: \(insertId)")
                 article.feed.unreadCount = article.feed.unreadCount  + 1
         }
@@ -219,7 +219,7 @@ class PersistenceProcessor
         let updates = articlesQuery.filter(ArticleTable.url == article.url)
         updates.update(ArticleTable.title <- article.title,
             ArticleTable.description <- article.description,
-            ArticleTable.pubDate <- article.time.timeIntervalSince1970)?
+            ArticleTable.pubDate <- article.time.timeIntervalSince1970)
     }
     
     func insertAndUpdateArticle(article: Article) {
@@ -234,7 +234,7 @@ class PersistenceProcessor
     
     func setReaded(article: Article) {
         let updates = articlesQuery.filter(ArticleTable.url == article.url)
-        updates.update(ArticleTable.Read <- 1)?
+        updates.update(ArticleTable.Read <- 1)
         article.feed.unreadCount = article.feed.unreadCount - 1
         
         updateFeed(article.feed)

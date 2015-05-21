@@ -4,6 +4,6 @@ use_frameworks!
 
 target 'MyReader' do
     pod 'Alamofire', '~> 1.1'
-    pod 'SwiftyJSON', '>= 2.1.3'
-    pod 'SWXMLHash', '~> 0.6.0'
+    pod 'SwiftyJSON', '>= 2.2'
+    pod 'SWXMLHash', '~> 1.0.0'
 end

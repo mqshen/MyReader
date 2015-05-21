@@ -99,10 +99,10 @@ class FeedRefreshOperation: NSOperation {
             self.connection = NSURLConnection(request: self.request, delegate: self, startImmediately: false)
             self.thread = NSThread.currentThread()
         }
-        if let connection = self.connection? {
+        if let connection = self.connection {
             connection.start()
             
-            if let progressHandler = self.progressHandler? {
+            if let progressHandler = self.progressHandler {
                 progressHandler(0, -1)
             }
            
@@ -120,12 +120,12 @@ class FeedRefreshOperation: NSOperation {
 //                    self.done()
 //                }
 //                else {
-                    self.connect(self.connection, error: NSError(domain: NSURLErrorDomain , code: NSURLErrorTimedOut, userInfo: [NSURLErrorFailingURLErrorKey: self.request.URL]))
+                    self.connect(self.connection, error: NSError(domain: NSURLErrorDomain , code: NSURLErrorTimedOut, userInfo: [NSURLErrorFailingURLErrorKey: self.request.URL!]))
                 //}
             }
         }
         else {
-            if let completeHandler = self.completeHandler? {
+            if let completeHandler = self.completeHandler {
                 dispatch_main_sync_safe {
                     completeHandler(nil, NSError(domain: NSURLErrorDomain, code: 0, userInfo: [NSLocalizedDescriptionKey : "Connection can't be initialized"]), true)
                 }
@@ -140,7 +140,7 @@ class FeedRefreshOperation: NSOperation {
             if httpResponse.statusCode < 400 {
                 let expected = response.expectedContentLength > 0 ? response.expectedContentLength : 0
                 self.expectedSize = Int(expected)
-                if let progressHandler = self.progressHandler? {
+                if let progressHandler = self.progressHandler {
                     progressHandler(0, self.expectedSize)
                 }
                 self.responseData = NSMutableData(capacity: self.expectedSize)
@@ -153,7 +153,7 @@ class FeedRefreshOperation: NSOperation {
         
         self.connection?.cancel()
         
-        if let completeHandler = self.completeHandler? {
+        if let completeHandler = self.completeHandler {
             dispatch_main_sync_safe {
                 completeHandler(nil, NSError(domain: NSURLErrorDomain, code: statue, userInfo: nil), true)
             }
@@ -164,11 +164,11 @@ class FeedRefreshOperation: NSOperation {
     }
     
     func connection(connection: NSURLConnection!, didReceiveData data: NSData!) {
-        if let responseData = self.responseData? {
+        if let responseData = self.responseData {
             responseData.appendData(data)
             let totalSize = responseData.length
             if (self.expectedSize > 0) {
-                if let completeHandler = self.completeHandler? {
+                if let completeHandler = self.completeHandler {
                     if (totalSize >= self.expectedSize) {
                         dispatch_main_sync_safe {
                             completeHandler(responseData, nil, false)
@@ -191,7 +191,7 @@ class FeedRefreshOperation: NSOperation {
             self.connection = nil
         }
         
-        if let completeHandler = self.completeHandler? {
+        if let completeHandler = self.completeHandler {
             dispatch_main_sync_safe {
                 completeHandler(self.responseData, nil, true)
             }
@@ -201,7 +201,7 @@ class FeedRefreshOperation: NSOperation {
     }
     
     func connect(connection: NSURLConnection?, error: NSError) {
-        if let completeHandler = self.completeHandler? {
+        if let completeHandler = self.completeHandler {
             dispatch_main_sync_safe {
                 completeHandler(nil, error, true)
             }

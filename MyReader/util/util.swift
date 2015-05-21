@@ -94,7 +94,7 @@ extension NSMutableString {
                     }
                     
                     // Start searching again from beyond the URL
-                    srchRange.location = srcRange.location + countElements(srcPath)
+                    srchRange.location = srcRange.location + count(srcPath)
                 }
                 else {
                     srchRange.location = srchRange.location + 1

@@ -10,7 +10,7 @@ import Foundation
 import Cocoa
 
 struct NonPersistedFlags : RawOptionSetType {
-    private let value: UInt = 0
+    private var value: UInt = 0
     
     init(rawValue value: UInt) { self.value = value }
     init(nilLiteral: ()) {self.value = 0}

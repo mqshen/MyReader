@@ -84,8 +84,8 @@ class ViewController: NSViewController, NSSplitViewDelegate, FoldersTreeDelegate
     
     func splitView(splitView: NSSplitView, resizeSubviewsWithOldSize oldSize: NSSize) {
         let dividerThickness: CGFloat = 1.0
-        let sv1: NSView = splitView.subviews[0] as NSView
-        let sv2: NSView  = splitView.subviews[1] as NSView
+        let sv1: NSView = splitView.subviews[0] as! NSView
+        let sv2: NSView  = splitView.subviews[1] as! NSView
         var leftFrame = sv1.frame
         var rightFrame = sv2.frame
         var newFrame = splitView.frame

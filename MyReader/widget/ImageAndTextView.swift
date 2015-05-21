@@ -38,7 +38,7 @@ class ImageAndTextView: NSView {
                 progressIndicator?.style = NSProgressIndicatorStyle.SpinningStyle
                 progressIndicator?.usesThreadedAnimation = true
             }
-            if let indicator = self.progressIndicator? {
+            if let indicator = self.progressIndicator {
                 var frame = indicator.frame
                 frame.origin.x = self.bounds.size.width - imageSize.width - 5
                 frame.origin.y = (self.bounds.size.height - imageSize.height) / 2

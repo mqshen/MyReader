@@ -28,7 +28,7 @@ class FeedOperation: NSOperation {
         
         Alamofire.request(.GET, self.url)
             .responseString { (request, response, string, error) in
-                if let completeHandler = self.completeHandler? {
+                if let completeHandler = self.completeHandler {
                     
                     dispatch_main_sync_safe {
                         completeHandler(request, response, string, error)

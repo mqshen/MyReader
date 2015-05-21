@@ -47,7 +47,7 @@ class RefreshManager {
     }
     
     func pumpSubscriptionRefresh(feed: Feed) {
-        if let url = NSURL(string: feed.url)? {
+        if let url = NSURL(string: feed.url) {
             
             var request = NSMutableURLRequest(URL: url)
             var timeSince: Int = Int(feed.lastUpdated.timeIntervalSince1970)
@@ -56,7 +56,7 @@ class RefreshManager {
             let operation = FeedRefreshOperation(request: request,
                 progressHandler: nil,
                 completeHandler: { (data: NSData?, error: NSError?, finish: Bool) -> Void in
-                    if let data = data? {
+                    if let data = data{
                         let xml = SWXMLHash.parse(data)
                         
                         if let rootNode = xml["rss"].element {
@@ -75,7 +75,7 @@ class RefreshManager {
                                 
                                 let url = elem["link"].element?.text
                                 var description = elem["description"].element?.text
-                                if let content = elem["content:encoded"].element? {
+                                if let content = elem["content:encoded"].element {
                                     description = content.text
                                 }
                                 let article = Article(title: title!, feed: feed, time: date, description: description!, url: url!)
@@ -203,17 +203,17 @@ class RefreshManager {
     }
     
     func pumpFolderIconRefresh(feed: Feed) {
-        if let homePage = feed.homePage? {
+        if let homePage = feed.homePage {
             let favIconPath = String(format: "%@/favicon.ico", homePage.baseURL())
-            if let url = NSURL(string: favIconPath)? {
+            if let url = NSURL(string: favIconPath) {
                 let operation = FeedRefreshOperation(request: NSURLRequest(URL: url),
                     progressHandler: nil,
                     completeHandler: { (data: NSData?, error: NSError?, finish: Bool) -> Void in
-                        if let e = error? {
+                        if let e = error {
                             println("icon not found")
                         }
                         else {
-                            if let iconData = data? {
+                            if let iconData = data {
                                 if let iconImage = NSImage(data: iconData) {
                                     if(iconImage.valid) {
                                         iconImage.size = Constants.IconSize
@@ -252,7 +252,7 @@ class RefreshManager {
     
     func formatDate(time: String?) -> NSDate {
         var date = NSDate()
-        if let time = time? {
+        if let time = time {
             let dateFormatter = NSDateFormatter()
             if(time.subString(0, end: 2) == "20" || time.subString(0, end: 2) == "19" ) {
                 dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss+SSS"
@@ -260,7 +260,7 @@ class RefreshManager {
             else {
                 dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss +SSS"
             }
-            if let temp = dateFormatter.dateFromString(time)? {
+            if let temp = dateFormatter.dateFromString(time) {
                 date = temp
             }
         }

@@ -62,7 +62,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         var firstId: Int64 = 0
         var lastId: Int64 = 0
         for element in xml["outline"] {
-            let node = element.element?
+            let node = element.element
             if("rss" == node?.attributes["type"]) {
                 let name = node?.attributes["title"]
                 let url = node?.attributes["xmlUrl"]
@@ -88,7 +88,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     }
     
     @IBAction func newSubscriptionMenuItemClicked(sender: AnyObject) {
-        if let window = NSApplication.sharedApplication().mainWindow? {
+        if let window = NSApplication.sharedApplication().mainWindow{
             let viewController = SubscriptionViewController()
             var sheet = NSWindow(contentViewController: viewController)
             viewController.window = sheet

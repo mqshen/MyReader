@@ -118,18 +118,18 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
     
     func outlineView(outlineView: NSOutlineView, willDisplayCell cell: AnyObject, forTableColumn tableColumn: NSTableColumn?, item: AnyObject) {
         if(tableColumn?.identifier ==  "folderColumns") {
-            let node = item as TreeNode
+            let node = item as! TreeNode
             let folder = node.feed
         }
     }
     
     
     func outlineView(outlineView: NSOutlineView, dataCellForTableColumn tableColumn: NSTableColumn?, item: AnyObject) -> NSCell? {
-        let node = item as TreeNode
+        let node = item as! TreeNode
         return NSCell(textCell: node.feed.fullName())
     }
     
-    func outlineView(outlineView: NSOutlineView!, shouldShowOutlineCellForItem item: AnyObject!) -> Bool  {
+    func outlineView(outlineView: NSOutlineView, shouldShowOutlineCellForItem item: AnyObject) -> Bool  {
         return true
     }
     
@@ -212,10 +212,6 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
         }
     }
     
-   
-    func outlineView(outlineView: NSOutlineView, shouldShowOutlineCellForItem item: AnyObject) -> Bool {
-        return true
-    }
     
     func handleFolderAdded(nc: NSNotification) {
         if let feed = nc.object as? Feed {
@@ -241,7 +237,7 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
     func handleFolderDelete(nc: NSNotification) {
         if let feed = nc.object as? Feed {
             if let node = self.rootNode.nodeFromID(feed.id) {
-                if let parentNode = node.parentNode? {
+                if let parentNode = node.parentNode {
                     node.removeFromParent()
                     self.reloadFolderItem(parentNode)
                 }
@@ -256,7 +252,7 @@ class FoldersTree: NSView, NSOutlineViewDataSource, NSOutlineViewDelegate, NSTab
             outlineView?.reloadDataForRowIndexes(rows, columnIndexes: cols)
             if(recurseToParents) {
                 while(node.parentNode != nil && node.parentNode != rootNode) {
-                    if var parentNode = node.parentNode? {
+                    if var parentNode = node.parentNode {
                         //outlineView?.reloadItem(parentNode)
                         outlineView?.reloadDataForRowIndexes(rows, columnIndexes: cols)
                         node = parentNode
